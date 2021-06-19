@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>apt_practice | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="实现第一个自动以注解使用注解的开源库很多，有GreenDao,Glide,ButterKnife等。    以ButterKnife的BindView为例子。现在这个已经不用了！github主页上也推荐使用ViewBinding。ViewBinding的原理其实也是检索layout文件夹并自动生成java代码，代码中依旧使用的是findViewById()。 1.新建AS工程后，新建三个模块123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="apt_practice">
+<meta property="og:url" content="http://example.com/2021/06/06/apt-practice/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="实现第一个自动以注解使用注解的开源库很多，有GreenDao,Glide,ButterKnife等。    以ButterKnife的BindView为例子。现在这个已经不用了！github主页上也推荐使用ViewBinding。ViewBinding的原理其实也是检索layout文件夹并自动生成java代码，代码中依旧使用的是findViewById()。 1.新建AS工程后，新建三个模块123">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-06T01:58:45.000Z">
+<meta property="article:modified_time" content="2021-06-06T04:17:32.284Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-apt-practice" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/06/apt-practice/" class="article-date">
+  <time class="dt-published" datetime="2021-06-06T01:58:45.000Z" itemprop="datePublished">2021-06-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      apt_practice
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="实现第一个自动以注解"><a href="#实现第一个自动以注解" class="headerlink" title="实现第一个自动以注解"></a>实现第一个自动以注解</h2><p>使用注解的开源库很多，有GreenDao,Glide,ButterKnife等。<br>    以ButterKnife的BindView为例子。现在这个已经不用了！github主页上也推荐使用ViewBinding。ViewBinding的原理其实也是检索layout文件夹并自动生成java代码，代码中依旧使用的是findViewById()。</p>
+<h3 id="1-新建AS工程后，新建三个模块"><a href="#1-新建AS工程后，新建三个模块" class="headerlink" title="1.新建AS工程后，新建三个模块"></a>1.新建AS工程后，新建三个模块</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt-processor //注解代码实现模块,继承AbstractProcessor</span><br><span class="line">apt-annotation //注解接口声明</span><br><span class="line">apt-library    //反射编写，API调用</span><br></pre></td></tr></table></figure>
+<h3 id="2-声明注解-apt-annotation"><a href="#2-声明注解-apt-annotation" class="headerlink" title="2.声明注解//apt-annotation"></a>2.声明注解//apt-annotation</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">BindView.java</span><br><span class="line">@Retention(RetentionPolicy.CLASS)</span><br><span class="line">@Target(ElementType.FIELD)</span><br><span class="line">public @interface BindView &#123;</span><br><span class="line">    int value();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-实现BindViewProcessor-apt-processor"><a href="#3-实现BindViewProcessor-apt-processor" class="headerlink" title="3.实现BindViewProcessor//apt-processor"></a>3.实现BindViewProcessor//apt-processor</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">@AutoService(Processor.class)</span><br><span class="line">public class BindViewProcessor extends AbstractProcessor &#123;</span><br><span class="line">//    private Filer filer;</span><br><span class="line"></span><br><span class="line">    private Messager mMessager;//annotation log,日志输出</span><br><span class="line">    private Elements elements;//程序元素</span><br><span class="line">    private Map&lt;String, ClassCreateProxy&gt; mProxyMap = new HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public synchronized void init(ProcessingEnvironment processingEnv) &#123;</span><br><span class="line">        /*</span><br><span class="line">        * 初始化拿到一些使用的工具，文件相关辅助类Filer,元素相关类Elements,日志相关Messenger;</span><br><span class="line">        * */</span><br><span class="line">        System.out.println(&quot;BindViewProcessor init&quot;);</span><br><span class="line">        super.init(processingEnv);</span><br><span class="line">//        filer = processingEnv.getFiler();</span><br><span class="line">        mMessager = processingEnv.getMessager();</span><br><span class="line">        elements = processingEnv.getElementUtils();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public SourceVersion getSupportedSourceVersion() &#123;</span><br><span class="line">        /*返回Java版本*/</span><br><span class="line">        return SourceVersion.latestSupported();</span><br><span class="line">//        return super.getSupportedSourceVersion();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Set&lt;String&gt; getSupportedAnnotationTypes() &#123;</span><br><span class="line">        /*return need deal annotation*/</span><br><span class="line">        LinkedHashSet&lt;String&gt; sets = new LinkedHashSet&lt;&gt;();</span><br><span class="line">        sets.add(BindView.class.getCanonicalName());//get BindView absolute path-&gt;&#x27;com.fizzer.aptannotation.BindView&#x27;  </span><br><span class="line">//        return super.getSupportedAnnotationTypes();</span><br><span class="line">        return sets;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /*</span><br><span class="line">    *该方法会回调多次</span><br><span class="line">    *return true,说明已处理了该注解,后面的processtor不处理该注解</span><br><span class="line">    */</span><br><span class="line">    @Override</span><br><span class="line">    public boolean process(Set&lt;? extends TypeElement&gt; set, RoundEnvironment roundEnvironment) &#123;</span><br><span class="line">        /*</span><br><span class="line">        * TypeElement:类或接口类型</span><br><span class="line">        * VariableElement:成员变量</span><br><span class="line">        * ExecuteableElement:成员方法</span><br><span class="line">        * */</span><br><span class="line"></span><br><span class="line">        mMessager.printMessage(Diagnostic.Kind.NOTE, &quot;processing...&quot;);</span><br><span class="line">        mProxyMap.clear();</span><br><span class="line"></span><br><span class="line">        Set&lt;? extends Element&gt; annotationElements = roundEnvironment.getElementsAnnotatedWith(BindView.class);//返回使用了BindView注解的类元素对象</span><br><span class="line">        for (Element element : annotationElements) &#123;</span><br><span class="line"></span><br><span class="line">            VariableElement variableElement = (VariableElement) element;//由于只声明了FIELD,因此知道为对象类型VariableElement</span><br><span class="line">            TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();</span><br><span class="line">            String fullClassName = classElement.getQualifiedName().toString();//类的绝对路径</span><br><span class="line">            ClassCreateProxy proxy = mProxyMap.get(fullClassName);//根据类的绝对路径来区分</span><br><span class="line">            if (proxy == null) &#123;</span><br><span class="line">                proxy = new ClassCreateProxy(elements, classElement);</span><br><span class="line">                mProxyMap.put(fullClassName, proxy);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            BindView bindView = element.getAnnotation(BindView.class);</span><br><span class="line">            int viewId = bindView.value();//获取通过@ViewBind(R.id.xx)得到的id值</span><br><span class="line">            proxy.putElement(viewId, variableElement);//放入到对应的类创建对象中</span><br><span class="line">        &#125;</span><br><span class="line">        for (String key : mProxyMap.keySet()) &#123;</span><br><span class="line">            ClassCreateProxy classCreateProxy = mProxyMap.get(key);</span><br><span class="line">            try &#123;</span><br><span class="line">                mMessager.printMessage(Diagnostic.Kind.NOTE, &quot;--&gt; create &quot; + classCreateProxy.getProxyClassFullName());</span><br><span class="line">                JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(classCreateProxy.getProxyClassFullName(), classCreateProxy.getTypeElement());</span><br><span class="line"></span><br><span class="line">                Writer writer = fileObject.openWriter();</span><br><span class="line">                writer.write(classCreateProxy.generateJavaCode());</span><br><span class="line">                writer.flush();</span><br><span class="line">                writer.close();</span><br><span class="line">            &#125; catch (IOException e) &#123;</span><br><span class="line">                mMessager.printMessage(Diagnostic.Kind.NOTE,&quot;--&gt; create failed, error=&quot; + e.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        mMessager.printMessage(Diagnostic.Kind.NOTE,&quot;process finished.&quot;);</span><br><span class="line">        return true;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="构建Java文件："><a href="#构建Java文件：" class="headerlink" title="构建Java文件："></a>构建Java文件：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">//构建方法</span><br><span class="line">private MethodSpec generateMethod2() &#123;</span><br><span class="line">    ClassName host = ClassName.bestGuess(mTypeElement.getQualifiedName().toString());</span><br><span class="line">    MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(&quot;bind&quot;)</span><br><span class="line">            .addModifiers(Modifier.PUBLIC)</span><br><span class="line">            .returns(void.class)</span><br><span class="line">            .addParameter(host, &quot;host&quot;);</span><br><span class="line">    for (Integer id : mVariableElementMap.keySet()) &#123;</span><br><span class="line">        VariableElement variableElement = mVariableElementMap.get(id);</span><br><span class="line">        String name=variableElement.getSimpleName().toString();</span><br><span class="line">        String type=variableElement.asType().toString();</span><br><span class="line">        methodBuilder.addCode(&quot;host.&quot; + name + &quot; = &quot; + &quot;(&quot; + type + &quot;)(((android.app.Activity)host).findViewById( &quot; + id + &quot;));&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return methodBuilder.build();</span><br><span class="line">&#125;</span><br><span class="line">//构建类</span><br><span class="line">public TypeSpec generateJavaCode2() &#123;</span><br><span class="line">    TypeSpec typeSpec = TypeSpec.classBuilder(mBindingClassName)</span><br><span class="line">            .addModifiers(Modifier.PUBLIC)</span><br><span class="line">            .addMethod(generateMethod2())</span><br><span class="line">            .build();</span><br><span class="line">    return typeSpec;</span><br><span class="line">&#125;</span><br><span class="line">//生成Java文件</span><br><span class="line">JavaFile javaFile = JavaFile.builder(&quot;com.fizzer.testlib&quot;, generateJavaCode2()).build();</span><br><span class="line">Writer writer = fileObject.openWriter();</span><br><span class="line">writer.write(classCreateProxy.generateJavaCode());</span><br><span class="line">writer.flush();</span><br><span class="line">writer.close();</span><br></pre></td></tr></table></figure>
+<h3 id="4-通过反射调用生成的Java文件-apt-library"><a href="#4-通过反射调用生成的Java文件-apt-library" class="headerlink" title="4.通过反射调用生成的Java文件//apt-library"></a>4.通过反射调用生成的Java文件//apt-library</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class BindViewTools &#123;</span><br><span class="line"></span><br><span class="line">    public static void bind(Activity activity)&#123;</span><br><span class="line">        Class clazz = activity.getClass();</span><br><span class="line">        try &#123;</span><br><span class="line">            Class bindViewClazz = Class.forName(clazz.getName() + &quot;_ViewBinding&quot;);</span><br><span class="line">            Method method = bindViewClazz.getMethod(&quot;bind&quot;,activity.getClass());</span><br><span class="line">            method.invoke(bindViewClazz.newInstance(),activity);</span><br><span class="line">        &#125; catch (ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (NoSuchMethodException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InstantiationException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InvocationTargetException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-Activity中执行"><a href="#5-Activity中执行" class="headerlink" title="5.Activity中执行"></a>5.Activity中执行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@BindView(R.id.btn)</span><br><span class="line">Button btn;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void onCreate(***)&#123;</span><br><span class="line">    ---</span><br><span class="line">    BindViewTools.bind(this);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用javapoet来生成java代码-是由square公司开源的"><a href="#使用javapoet来生成java代码-是由square公司开源的" class="headerlink" title="使用javapoet来生成java代码,是由square公司开源的"></a>使用javapoet来生成java代码,是由square公司开源的</h3><p>将参数封装成对象，直接在对象中填充参数即可生成.java源文件。</p>
+<h3 id="使用autoservice来自动生成processor文件。"><a href="#使用autoservice来自动生成processor文件。" class="headerlink" title="使用autoservice来自动生成processor文件。"></a>使用autoservice来自动生成processor文件。</h3><p>生成的文件保存在/build/classes/java/main/META-INF/services/javax.annotation.processing.Processor<br>使用gradle高版本，需要在引入auto-service的时候同时引入annotationProcess</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">implementation &#x27;com.google.auto.service:auto-service:1.0-rc6&#x27;</span><br><span class="line">annotationProcessor &#x27;com.google.auto.service:auto-service:1.0-rc6&#x27;</span><br></pre></td></tr></table></figure>
+<h4 id="注解处理器javax-annotation-processing-Processor"><a href="#注解处理器javax-annotation-processing-Processor" class="headerlink" title="注解处理器javax.annotation.processing.Processor"></a>注解处理器javax.annotation.processing.Processor</h4><p>是javac内置的一个用于编译时扫描和处理注解的工具。<br>比较常用的用法是在编译期间获取相关的注解数据(理解为需要解析编译的AbstractProcessor类)，然后动态生成.java源文件。<br>可以查看autoservice生成的processor文件，文件内容主要是标记了@AutoService(Processor.class)文件的绝对路径。</p>
+<h3 id="APT调试"><a href="#APT调试" class="headerlink" title="APT调试"></a>APT调试</h3><p>使用Messager/System.out.println()都行，由于其是在编译构建时打印，因此日志输出不是在Logcat中，而是在Build中。日志输出打印是在Build日志中，因此需要保存日志信息，通过查询关键字查看日志信息。<br>Task :app:compileDebugJavaWithJavac在执行这个Task的下面能够看到AbstractProcessor执行时添加的日志打印。</p>
+<h5 id="一些容易疏忽的点"><a href="#一些容易疏忽的点" class="headerlink" title="一些容易疏忽的点:"></a>一些容易疏忽的点:</h5><p>1.生成的java文件不一定在/generated/source/apt/路径下，也可能是在/generated/ap_generated_sources/debug/路径下</p>
+<h3 id="相关API描述："><a href="#相关API描述：" class="headerlink" title="相关API描述："></a>相关API描述：</h3><h4 id="Java注解标签"><a href="#Java注解标签" class="headerlink" title="Java注解标签"></a>Java注解标签</h4><p>@interface：声明注解<br>@Target：目标，可理解为在Java程序中的语法位置，支持以下参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ElementType.TYPE:类, 接口 (包括注解类型), 或 枚举 声明</span><br><span class="line">ElementType.FIELD:字段声明（包括枚举常量）</span><br><span class="line">ElementType.METHOD:方法声明(Method declaration)</span><br><span class="line">ElementType.PARAMETER:正式的参数声明</span><br><span class="line">ElementType.CONSTRUCTOR:构造函数声明</span><br><span class="line">ElementType.LOCAL_VARIABLE:局部变量声明</span><br><span class="line">ElementType.ANNOTATION_TYPE:注解类型声明</span><br><span class="line">ElementType.PACKAGE:包声明</span><br><span class="line">ElementType.TYPE_PARAMETER:类型参数声明,@since 1.8</span><br><span class="line">ElementType.TYPE_USE:使用的类型,@since 1.8</span><br></pre></td></tr></table></figure>
+<p>@Retention:保留注解的策略，指定保留时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">RetentionPolicy.SOURCE:源代码级别保留，编译是忽略。编译成class文件的时候，注解被遗弃。</span><br><span class="line">RetentionPolicy.CLASS:注释由编译器记录在类文件中但不必在运行时由VM保留。这是默认值。</span><br><span class="line">RetentionPolicy.RUNTIME:注释由编译器记录在类文件中，并且由VM在运行时保留，因此可以通过反射方式读取它们。可以在运行的时候需要动态获取注解信息。</span><br><span class="line">生命周期长度：RUNTIME &gt; CLASS &gt; SOURCE。SOURCE使用的场景类似于一些检测操作，像@NotNull,@Override,@SuppressWarnings。而像自动生成Java代码这种是需要Javac编译的，因此需要使用CLASS属性，像上面提到的Butter Knife等一些需要在编译构建生成java代码文件的注解就需要使用CLASS属性。</span><br></pre></td></tr></table></figure>
+<h4 id="Element"><a href="#Element" class="headerlink" title="Element"></a>Element</h4><p>Element:元素父类<br>    getEnclosingElement();//返回包裹该对象的外层元素，e.g:方法的外层元素就是类，类的外层元素是包。<br>    getEnclosedElements();//返回由此元素直接包含的元素，<br>VariableElement：表示字段，枚举常量，方法或构造函数参数，局部变量，资源变量或异常参数<br>TypeElement：表示类或接口元素。<br>ExecutableElement：表示类或接口的方法元素。<br>PackageElement：包程序元素。</p>
+<h3 id="学习思考"><a href="#学习思考" class="headerlink" title="学习思考"></a>学习思考</h3><p>1.保存的Java文件路径能修改吗？<br>    process方法中通过Filer,StandardLocation两个类对象可以配置修改Java文件生成的路径</p>
+<h3 id="参考学习资料："><a href="#参考学习资料：" class="headerlink" title="参考学习资料："></a>参考学习资料：</h3><p>注解类型描述：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/a8457013/p/9965551.html">https://www.cnblogs.com/a8457013/p/9965551.html</a><br>注解编写：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/7af58e8e3e18">https://www.jianshu.com/p/7af58e8e3e18</a><br>java API文档：<a target="_blank" rel="noopener" href="https://www.apiref.com/java11-zh/java.compiler/javax/lang/model/element/Element.html">https://www.apiref.com/java11-zh/java.compiler/javax/lang/model/element/Element.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2021/06/06/apt-practice/" data-id="ckq38rkdf0000ekuvctbx79lc" data-title="apt_practice" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/06/apt-practice/">apt_practice</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
